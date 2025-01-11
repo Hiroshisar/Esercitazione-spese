@@ -7,13 +7,13 @@ internal class Modelli : IProcessRequest
         {
             if (request.Amount > 2500)
             {
-                Process(false, request);
+                Process(request);
                 return;
             }
 
             if (request.Amount > 0 && request.Amount <= 400)
             {
-                Process(true, request, this);
+                Process(request, this);
             }
             else if (Successor != null)
             {
@@ -24,13 +24,13 @@ internal class Modelli : IProcessRequest
 
     }
 
-    public class OperaionalManager : RefundLimit
+    public class Operational_Manager : RefundLimit
     {
         public override void CheckRefundaility(RefundRequest request)
         {
             if (request.Amount > 400 && request.Amount <= 1000)
             {
-                Process(true, request, this);
+                Process(request, this);
             }
             else if (Successor != null)
             {
@@ -45,18 +45,18 @@ internal class Modelli : IProcessRequest
         {
             if (request.Amount > 1000)
             {
-                Process(true, request, this);
+                Process(request, this);
             }
             else
             {
-                Process(false, request);
+                Process(request);
             }
         }
     }
 
-    public static void Process(bool IsRefundable, RefundRequest request, RefundLimit model = null)
+    public static void Process(RefundRequest request, RefundLimit model = null)
     {
-        if (IsRefundable)
+        if (model != null)
         {
             File.AppendAllLines("spese_elaborate.txt", [$"{request.Date:dd/MM/yyyy};{request.Category};{request.Description};APPROVATA;{model.Role};{CalculateRefund(request)}"]);
         }

@@ -21,7 +21,7 @@ foreach (RefundRequest request in requests)
 */
 
 Modelli.Manager manager = new();
-Modelli.OperaionalManager operaionalManager = new();
+Modelli.Operational_Manager operaionalManager = new();
 Modelli.CEO ceo = new();
 
 manager.SetSuccessor(operaionalManager);
