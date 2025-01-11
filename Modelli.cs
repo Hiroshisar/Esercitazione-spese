@@ -1,60 +1,59 @@
-﻿
-internal class Modelli : IProcessRequest
+﻿internal class Modelli : IProcessRequest
 {
-    public class Manager : RefundLimit
+    public class Manager : RefundEvaluator
     {
-        public override void CheckRefundaility(RefundRequest request)
+        public override void EvaluateRefundRequest(RefundRequest request)
         {
             if (request.Amount > 2500)
             {
-                Process(request);
+                ProcessRefundRequest(request);
                 return;
             }
 
             if (request.Amount > 0 && request.Amount <= 400)
             {
-                Process(request, this);
+                ProcessRefundRequest(request, this);
             }
             else if (Successor != null)
             {
-                Successor.CheckRefundaility(request);
+                Successor.EvaluateRefundRequest(request);
             }
         }
 
 
     }
 
-    public class Operational_Manager : RefundLimit
+    public class Operational_Manager : RefundEvaluator
     {
-        public override void CheckRefundaility(RefundRequest request)
+        public override void EvaluateRefundRequest(RefundRequest request)
         {
             if (request.Amount > 400 && request.Amount <= 1000)
             {
-                Process(request, this);
+                ProcessRefundRequest(request, this);
             }
             else if (Successor != null)
             {
-                Successor.CheckRefundaility(request);
+                Successor.EvaluateRefundRequest(request);
             }
         }
     }
 
-    public class CEO : RefundLimit
+    public class CEO : RefundEvaluator
     {
-        public override void CheckRefundaility(RefundRequest request)
+        public override void EvaluateRefundRequest(RefundRequest request)
         {
             if (request.Amount > 1000)
             {
-                Process(request, this);
+                ProcessRefundRequest(request, this);
             }
             else
             {
-                Process(request);
+                ProcessRefundRequest(request);
             }
         }
     }
 
-    public static void Process(RefundRequest request, RefundLimit model = null)
+    public static void ProcessRefundRequest(RefundRequest request, RefundEvaluator model = null)
     {
         if (model != null)
         {

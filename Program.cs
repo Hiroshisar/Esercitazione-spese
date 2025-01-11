@@ -21,15 +21,15 @@ foreach (RefundRequest request in requests)
 */
 
 Modelli.Manager manager = new();
-Modelli.Operational_Manager operaionalManager = new();
+Modelli.Operational_Manager operationalManager = new();
 Modelli.CEO ceo = new();
 
-manager.SetSuccessor(operaionalManager);
-operaionalManager.SetSuccessor(ceo);
+manager.SetSuccessor(operationalManager);
+operationalManager.SetSuccessor(ceo);
 
 foreach(string expenseLine in File.ReadAllLines("spese.txt"))
 {
     string[] values = expenseLine.Split(';');
     RefundRequest request = new(DateTime.Parse(values[0]), values[1], values[2], double.Parse(values[3]));
-    manager.CheckRefundaility(request);
+    manager.EvaluateRefundRequest(request);
 }
